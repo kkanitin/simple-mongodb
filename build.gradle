@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.2'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.example'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = '21'
+    targetCompatibility = '21'
+}
+
+ext {
+    set('mongodbVersion', '5.0+')
+    set('lombokVersion', '1.18+')
+    set('mongockVersion', '5.4+')
+    set('mapStructVersion', '1.5.5.Final')
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation "org.mapstruct:mapstruct:${mapStructVersion}"
+    implementation "org.mongodb:mongodb-driver-core:${mongodbVersion}"
+    implementation "org.mongodb:mongodb-driver-sync:${mongodbVersion}"
+    implementation "org.mongodb:bson:${mongodbVersion}"
+    implementation "io.mongock:mongock-springboot:${mongockVersion}"
+    implementation "io.mongock:mongodb-springdata-v3-driver:${mongockVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

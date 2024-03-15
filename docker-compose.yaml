@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=mongoDb
+      - MONGO_DB_USERNAME=root
+      - MONGO_DB_PASSWORD=password
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - your-directory:/data/db
+      - ./mongo-entrypoint.sh:/usr/local/bin/mongo-entrypoint.sh
+    command: [ "--bind_ip", "0.0.0.0" ]
+    networks:
+      - main-network
+  app:
+    container_name: mongo_crud
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    depends_on:
+      - mongo
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
+      - SPRING_DATA_MONGODB_HOST=mongo
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_USERNAME=springboot-mydatabase
+      - SPRING_DATA_MONGODB_PASSWORD=password
+      - SPRING_DATA_MONGODB_DATABASE=mydatabase
+    networks:
+      - main-network
+
+networks:
+  main-network:
