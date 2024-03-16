@@ -8,8 +8,6 @@ import com.example.simplemongo.repository.AuthorRepositoryImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @AllArgsConstructor
 public class AuthorService {
@@ -17,12 +15,25 @@ public class AuthorService {
     private final AuthorRepositoryImpl authorRepositoryImpl;
     private final AuthorMapper authorMapper;
 
-    public List<Author> createAuthors(List<AuthorModel> authorModels) {
-        return authorRepositoryImpl.saveAll(authorMapper.toAuthorEntities(authorModels));
+    public Author createAuthor(AuthorModel authorModel) {
+        return authorRepositoryImpl.save(authorMapper.toAuthorEntity(authorModel));
     }
 
     public Author getAuthorByPenName(AuthorByPenNameRequest authorByPenNameRequest) {
         return authorRepositoryImpl.findByPenName(authorByPenNameRequest.getPenName());
+    }
+
+    public Author updateAuthor(String authorId, AuthorModel authorModel) {
+        return authorRepositoryImpl.update(authorMapper.toAuthorEntityWithId(authorId, authorModel));
+    }
+
+    public long partialUpdateAuthor(String authorId, AuthorModel authorModel) {
+        Author authorEntity = authorMapper.toAuthorEntityWithId(authorId, authorModel);
+        return authorRepositoryImpl.partialUpdate(authorEntity, authorMapper.toUpdateDefinition(authorEntity));
+    }
+
+    public Long deleteAuthor(String id) {
+        return authorRepositoryImpl.delete(id);
     }
 }
 

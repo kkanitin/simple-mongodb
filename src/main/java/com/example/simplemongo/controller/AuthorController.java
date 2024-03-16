@@ -8,13 +8,15 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -25,13 +27,27 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @PostMapping
-    public ResponseEntity<List<Author>> createAuthors(@RequestBody @Validated List<AuthorModel> authorModels) {
-        return ResponseEntity.ok(authorService.createAuthors(authorModels));
+    public ResponseEntity<Author> createAuthor(@RequestBody @Validated AuthorModel authorModel) {
+        return ResponseEntity.ok(authorService.createAuthor(authorModel));
     }
 
     @GetMapping
     public ResponseEntity<Author> getAuthorByPenName(@RequestBody @Validated AuthorByPenNameRequest request) {
-        Author authorsByPenName = authorService.getAuthorByPenName(request);
-        return ResponseEntity.ok(authorsByPenName);
+        return ResponseEntity.ok(authorService.getAuthorByPenName(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Author> updateAuthor(@PathVariable String id, @RequestBody @Validated AuthorModel authorModel) {
+        return ResponseEntity.ok(authorService.updateAuthor(id, authorModel));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Long> partialUpdateAuthor(@PathVariable String id, @RequestBody AuthorModel authorModel) {
+        return ResponseEntity.ok(authorService.partialUpdateAuthor(id, authorModel));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Long> deleteAuthor(@PathVariable String id) {
+        return ResponseEntity.ok(authorService.deleteAuthor(id));
     }
 }
