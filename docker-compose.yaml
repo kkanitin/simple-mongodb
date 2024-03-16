@@ -14,7 +14,7 @@ services:
       - MONGO_DB_PASSWORD=password
     volumes:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-      - your-directory:/data/db
+      - D:\project\etc\mongo-data:/data/db
       - ./mongo-entrypoint.sh:/usr/local/bin/mongo-entrypoint.sh
     networks:
       - main-network

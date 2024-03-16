@@ -1,14 +1,14 @@
 db = db.getSiblingDB('admin');
 
+// seem like mongodb confuse when use multiple line and indent
 if (db.getUser("springboot-mydatabase") == null) {
     db.createUser({
         user: "springboot-mydatabase",
         pwd: "password",
-        roles: [
-            {role: "readWrite", db: "mydatabase"},
-            {role: "read", db: "admin"},
-            {role: "read", db: "config"}
-        ]
+        roles: [{"role": "readWrite", "db": "mydatabase"}, {"role": "read", "db": "admin"}, {
+            "role": "read",
+            "db": "config"
+        }]
     });
 }
 
@@ -18,11 +18,10 @@ if (db.getUser("springboot-mydatabase") == null) {
     db.createUser({
         user: "springboot-mydatabase",
         pwd: "password",
-        roles: [
-            {role: "readWrite", db: "mydatabase"},
-            {role: "read", db: "admin"},
-            {role: "read", db: "config"}
-        ]
+        roles: [{"role": "readWrite", "db": "mydatabase"}, {"role": "read", "db": "admin"}, {
+            "role": "read",
+            "db": "config"
+        }]
     });
 }
 

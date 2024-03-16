@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Run MongoDB with authentication enabled
 #mongod --auth
